@@ -1,5 +1,8 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable, HttpException } from '@nestjs/common';
 import { BOOKS } from '../mocks/books.mock';
+import { Book } from './book.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class BooksService {
@@ -40,6 +43,13 @@ export class BooksService {
       this.books.splice(index, 1);
       resolve(this.books);
     });
+  }
+
+  constructor(@InjectRepository(Book) 
+              private readonly bookRepository: Repository<Book>) { }
+
+  async findAll(): Promise<Book[]> {
+    return await this.bookRepository.find();
   }
 
 }

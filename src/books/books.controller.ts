@@ -1,16 +1,22 @@
+import { Book } from './book.entity';
 import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDTO } from './dto/CreateBookDTO';
 
 @Controller('books')
 export class BooksController {
-  constructor(private service: BooksService) {
+  constructor(private readonly service: BooksService) {
   }
 
   @Get()
   async getBoooks() {
     const books = await this.service.getBooks();
     return books;
+  }
+
+  @Get('/all')
+  findAll(): Promise<Book[]> {
+      return this.service.findAll();
   }
 
   @Get(':bookID')
